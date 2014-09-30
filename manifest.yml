@@ -1,0 +1,11 @@
+---
+applications:
+- name: python-sample
+  instances: 1
+  memory: 256M
+  path: .
+  host: python-sampleee
+  #command: python manage.py syncdb
+  timeout: 180
+  services:
+  - rails-mysql
