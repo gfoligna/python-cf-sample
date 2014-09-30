@@ -59,12 +59,39 @@ WSGI_APPLICATION = 'gettingstarted.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+if 'VCAP_SERVICES' in os.environ:
+    import json
+    vcap_services = json.loads(os.environ['VCAP_SERVICES'])
+    # XXX: avoid hardcoding here
+    mysql_srv = vcap_services['cleardb'][0]
+    cred = mysql_srv['credentials']
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': cred['name'],
+            'USER': cred['username'],
+            'PASSWORD': cred['password'],
+            'HOST': cred['hostname'],
+            'PORT': cred['port'],
+            }
+        }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "dev.db",
+            "USER": "",
+            "PASSWORD": "",
+            "HOST": "",
+            "PORT": "",
+            }
+        }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
