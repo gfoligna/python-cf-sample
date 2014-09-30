@@ -1,35 +1,33 @@
-# python-getting-started
+# python-cf-sample
 
-A barebones Python app, which can easily be deployed to Heroku.
+A barebones Python app, which can easily be deployed to Cloud Foundry.
 
-This application support the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
-
-## Running Locally
-
-Make sure you have Python [installed properly](http://install.python-guide.org).  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
+## Deploying to Cloud Foundry
 
 ```sh
-$ git clone git@github.com:heroku/python-getting-started.git
-$ cd python-getting-started
-$ pip install -r requirements.txt
-$ python manage.py syncdb
-$ foreman start web
+$ git clone https://github.com/gfoligna/python-cf-sample.git ; cd python-cf-sample
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+You may want to edit the _manifest.yml_ to change the host name and the service name of your MySQL DB.
+The current configuration of the _manifest.yml_ is:
 
-## Deploying to Heroku
+```yaml
+---
+applications:
+- name: python-sample
+  instances: 1
+  memory: 256M
+  path: .
+  host: python-sampleee
+  command: python manage.py syncdb && gunicorn gettingstarted.wsgi --log-file -
+  timeout: 180
+  services:
+    - python-mysql
+```
+
+If you are ready to push, go ahead (:
 
 ```sh
-$ heroku create
-$ git push heroku master
-$ heroku run python manage.py syncdb
-$ heroku open
+$ cf push
 ```
-
-## Documentation
-
-For more information about using Python on Heroku, see these Dev Center articles:
-
-- [Python on Heroku](https://devcenter.heroku.com/categories/python)
 
