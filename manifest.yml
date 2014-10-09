@@ -1,10 +1,10 @@
 ---
 applications:
-- name: python-sample
+    - name: python-sample
   instances: 1
   memory: 256M
   path: .
-  host: python-sampleee
+  host: python-sample-bender
   command: python manage.py syncdb && gunicorn gettingstarted.wsgi --log-file -
   timeout: 180
   services:
