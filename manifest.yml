@@ -1,6 +1,6 @@
 ---
 applications:
-    - name: python-sample
+- name: python-sample
   instances: 1
   memory: 256M
   path: .
